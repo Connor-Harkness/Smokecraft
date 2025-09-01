@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "TTF",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "T": {
+      "item": "smokecraft:cured_tobacco"
+    },
+    "F": {
+      "item": "smokecraft:filter"
+    }
+  },
+  "result": {
+    "item": "smokecraft:cigarette",
+    "count": 4
+  }
+}

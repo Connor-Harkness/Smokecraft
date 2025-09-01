@@ -1,6 +1,7 @@
 package com.smokecraft.smokecraft;
 
 import com.smokecraft.smokecraft.config.SmokecraftConfig;
+import com.smokecraft.smokecraft.init.BlockInit;
 import com.smokecraft.smokecraft.init.CreativeTabInit;
 import com.smokecraft.smokecraft.init.ItemInit;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +27,7 @@ public class Smokecraft {
     public Smokecraft(IEventBus modEventBus, ModContainer modContainer) {
         // Register deferred registries
         ItemInit.ITEMS.register(modEventBus);
+        BlockInit.BLOCKS.register(modEventBus);
         CreativeTabInit.CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register mod setup

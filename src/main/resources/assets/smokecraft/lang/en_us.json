@@ -2,6 +2,12 @@
   "item.smokecraft.cigarette": "Cigarette",
   "item.smokecraft.lighter": "Lighter", 
   "item.smokecraft.cigarette_butt": "Cigarette Butt",
+  "item.smokecraft.tobacco_seeds": "Tobacco Seeds",
+  "item.smokecraft.raw_tobacco": "Raw Tobacco",
+  "item.smokecraft.cured_tobacco": "Cured Tobacco",
+  "item.smokecraft.filter": "Filter",
+  
+  "block.smokecraft.tobacco_plant": "Tobacco Plant",
   
   "itemGroup.smokecraft": "Smokecraft",
   
