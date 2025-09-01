@@ -1,0 +1,12 @@
+{
+  "item.smokecraft.cigarette": "Cigarette",
+  "item.smokecraft.lighter": "Lighter", 
+  "item.smokecraft.cigarette_butt": "Fag End",
+  
+  "itemGroup.smokecraft": "Smokecraft",
+  
+  "smokecraft.health_warning": "§e[Health Warning] §fSmoking is harmful to health. This mod is for entertainment only.",
+  "smokecraft.need_lighter": "You need a lighter to smoke this cigarette!",
+  "smokecraft.lighter_broke": "Your lighter is out of fuel!",
+  "smokecraft.lighter_empty": "Your lighter is out of fuel!"
+}
