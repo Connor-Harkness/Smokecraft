@@ -57,9 +57,9 @@ public class Smokecraft {
         Player player = event.getEntity();
         if (!player.level().isClientSide && SmokecraftConfig.SHOW_HEALTH_WARNING.get()) {
             // Show health warning message
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+            player.displayClientMessage(net.minecraft.network.chat.Component.literal(
                 "§e[Smokecraft] §fReminder: This mod is for entertainment only. Smoking is harmful to health. Always smoke responsibly in real life!"
-            ));
+            ), false);
         }
     }
 }

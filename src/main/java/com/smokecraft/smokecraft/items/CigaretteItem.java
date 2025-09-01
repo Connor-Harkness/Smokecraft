@@ -7,14 +7,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 
 public class CigaretteItem extends Item {
@@ -24,131 +24,93 @@ public class CigaretteItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack cigaretteStack = player.getItemInHand(hand);
         
         // Check if player has a lighter
-        if (!hasLighter(player)) {
-            if (!level.isClientSide) {
-                player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                    "You need a lighter to smoke this cigarette!"
-                ));
-            }
-            return InteractionResultHolder.fail(cigaretteStack);
+        ItemStack otherHandStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+        boolean hasLighter = otherHandStack.getItem() == ItemInit.LIGHTER.get();
+        
+        if (!hasLighter && !player.getInventory().contains(new ItemStack(ItemInit.LIGHTER.get()))) {
+            // No lighter available
+            return InteractionResult.FAIL;
         }
 
-        // Start smoking
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(cigaretteStack);
+        return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return 72000; // 60 seconds at 20 ticks per second
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player) {
-            // Consume cigarette
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-
-            // Damage lighter
-            damageLighter(player);
-
-            // Apply effects based on config
-            if (!level.isClientSide) {
-                applySmokingEffects(player);
+            // Apply effects if enabled
+            if (!SmokecraftConfig.COSMETIC_ONLY.get()) {
+                // Small hunger restoration (like eating a small snack)
+                player.getFoodData().eat(1, 0.1f);
                 
-                // Drop cigarette butt if enabled
-                if (SmokecraftConfig.CIGARETTE_BUTT_ENABLED.get()) {
-                    ItemStack butt = new ItemStack(ItemInit.CIGARETTE_BUTT.get());
-                    if (!player.getInventory().add(butt)) {
-                        player.drop(butt, false);
-                    }
-                }
+                // TODO: Re-enable effects once we figure out the correct MobEffects constants
+                // Small temporary speed boost (like a caffeine effect)
+                // player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 0));
+                
+                // Very minor poison effect if nausea effects are enabled
+                // if (SmokecraftConfig.ENABLE_NAUSEA_EFFECT.get()) {
+                //     player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0));
+                // }
             }
-
-            // Sound effect
+            
+            // Play finish sound
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.5f, 1.0f);
+                
+            // Consume the cigarette and give back cigarette butt
+            stack.shrink(1);
+            if (!player.getInventory().add(new ItemStack(ItemInit.CIGARETTE_BUTT.get()))) {
+                player.drop(new ItemStack(ItemInit.CIGARETTE_BUTT.get()), false);
+            }
         }
-
+        
         return stack;
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
-        return SmokecraftConfig.CIGARETTE_USE_DURATION.get();
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.BOW; // Similar to drinking animation
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.DRINK; // Similar to drinking animation
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseTicks) {
         if (level.isClientSide && entity instanceof Player player) {
             // Spawn smoke particles
-            double density = SmokecraftConfig.SMOKE_PARTICLE_DENSITY.get();
-            if (level.random.nextDouble() < density) {
-                double x = player.getX() + (level.random.nextDouble() - 0.5) * 0.3;
-                double y = player.getY() + player.getEyeHeight() - 0.1;
-                double z = player.getZ() + (level.random.nextDouble() - 0.5) * 0.3;
+            if (remainingUseTicks % 10 == 0) { // Every half second
+                double x = player.getX() + level.random.nextGaussian() * 0.1;
+                double y = player.getY() + player.getEyeHeight() + 0.1;
+                double z = player.getZ() + level.random.nextGaussian() * 0.1;
                 
-                level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 
-                    (level.random.nextDouble() - 0.5) * 0.02, 
-                    0.05 + level.random.nextDouble() * 0.02, 
-                    (level.random.nextDouble() - 0.5) * 0.02);
+                level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0.0, 0.05, 0.0);
+            }
+        }
+        
+        if (!level.isClientSide && entity instanceof Player player) {
+            // Server-side particle spawning for other players to see
+            if (remainingUseTicks % 20 == 0) { // Every second
+                ((ServerLevel) level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, 
+                    player.getX(), player.getY() + player.getEyeHeight() + 0.1, player.getZ(),
+                    3, 0.1, 0.1, 0.1, 0.02);
             }
         }
     }
 
-    private boolean hasLighter(Player player) {
-        return player.getInventory().contains(new ItemStack(ItemInit.LIGHTER.get()));
-    }
-
-    private void damageLighter(Player player) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack stack = player.getInventory().getItem(i);
-            if (stack.getItem() instanceof LighterItem) {
-                stack.hurtAndBreak(1, player, (p) -> {
-                    p.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                        "Your lighter broke!"
-                    ));
-                });
-                break;
-            }
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        // If player stops using early, still spawn some smoke and play sound
+        if (entity instanceof Player player) {
+            level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.3f, 1.2f);
         }
-    }
-
-    private void applySmokingEffects(Player player) {
-        // Only apply effects if not cosmetic only
-        if (SmokecraftConfig.COSMETIC_ONLY.get()) {
-            return;
-        }
-
-        ServerLevel serverLevel = (ServerLevel) player.level();
-
-        // Hunger effect
-        if (SmokecraftConfig.ENABLE_HUNGER_EFFECT.get()) {
-            int hungerDrain = SmokecraftConfig.CIGARETTE_HUNGER_DRAIN.get();
-            player.getFoodData().addExhaustion(hungerDrain);
-        }
-
-        // Nicotine rush (speed effect)
-        if (SmokecraftConfig.ENABLE_NICOTINE_RUSH.get()) {
-            int duration = SmokecraftConfig.NICOTINE_RUSH_DURATION.get();
-            int amplifier = SmokecraftConfig.NICOTINE_RUSH_AMPLIFIER.get();
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, amplifier));
-        }
-
-        // Nausea for new smokers
-        if (SmokecraftConfig.ENABLE_NAUSEA_EFFECT.get()) {
-            // Simple check - if player has no speed effect, they might be a new smoker
-            if (!player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
-                int duration = SmokecraftConfig.NAUSEA_DURATION.get();
-                int amplifier = SmokecraftConfig.NAUSEA_AMPLIFIER.get();
-                player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, amplifier));
-            }
-        }
+        return true;
     }
 }
