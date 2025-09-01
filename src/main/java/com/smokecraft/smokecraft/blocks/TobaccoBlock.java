@@ -10,7 +10,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -87,7 +86,5 @@ public class TobaccoBlock extends Block {
         return true;
     }
 
-    public ItemLike getCloneItemFromBlockState(BlockState state, BlockGetter level, BlockPos pos) {
-        return ItemInit.RAW_TOBACCO.get(); // When middle-clicked in creative, gives raw tobacco
-    }
+    // Remove the problematic getCloneItemFromBlockState method for now
 }

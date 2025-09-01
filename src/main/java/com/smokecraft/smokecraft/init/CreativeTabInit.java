@@ -18,9 +18,5 @@ public class CreativeTabInit {
                 output.accept(ItemInit.CIGARETTE.get());
                 output.accept(ItemInit.LIGHTER.get());
                 output.accept(ItemInit.CIGARETTE_BUTT.get());
-                output.accept(ItemInit.TOBACCO_SEEDS.get());
-                output.accept(ItemInit.RAW_TOBACCO.get());
-                output.accept(ItemInit.CURED_TOBACCO.get());
-                output.accept(ItemInit.FILTER.get());
             }).build());
 }

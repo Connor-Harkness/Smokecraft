@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "smokecraft:item/tobacco_seeds"
-  }
-}
