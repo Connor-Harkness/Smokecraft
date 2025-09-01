@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+gradlew.bat
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Minecraft
+run/
+logs/
+
+# Other
+*.jar
+!gradle/wrapper/gradle-wrapper.jar

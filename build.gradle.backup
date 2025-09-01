@@ -4,6 +4,8 @@ plugins {
     id 'net.neoforged.gradle.userdev' version '7.0.80'
 }
 
+apply plugin: 'net.neoforged.gradle.userdev'
+
 version = '1.0.0'
 group = 'com.smokecraft.smokecraft'
 archivesBaseName = 'smokecraft'
