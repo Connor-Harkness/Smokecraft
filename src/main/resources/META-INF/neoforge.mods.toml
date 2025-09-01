@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,)"
+loaderVersion="[4,)"
 license="MIT"
 issueTrackerURL="https://github.com/Connor-Harkness/Smokecraft/issues"
 
@@ -11,13 +11,13 @@ description='''
 A Minecraft mod that adds cigarettes, lighters, and smoking mechanics. Features configurable effects (cosmetic-only by default), particle effects, and sound. Always smoke responsibly - this is just a game mod!
 '''
 authors="SmokecraftTeam"
-credits="Forge team for the excellent modding framework"
+credits="NeoForge team for the excellent modding framework"
 logoFile="logo.png"
 
 [[dependencies.smokecraft]]
-modId="forge"
+modId="neoforge"
 mandatory=true
-versionRange="[52.0.17,)"
+versionRange="[21.1.72,)"
 ordering="NONE"
 side="BOTH"
 

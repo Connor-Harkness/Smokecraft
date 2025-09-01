@@ -1,38 +1,38 @@
 package com.smokecraft.smokecraft.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class SmokecraftConfig {
     
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec COMMON_CONFIG;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec COMMON_CONFIG;
 
     // General settings
-    public static final ForgeConfigSpec.BooleanValue SHOW_HEALTH_WARNING;
-    public static final ForgeConfigSpec.BooleanValue COSMETIC_ONLY;
+    public static final ModConfigSpec.BooleanValue SHOW_HEALTH_WARNING;
+    public static final ModConfigSpec.BooleanValue COSMETIC_ONLY;
     
     // Cigarette settings
-    public static final ForgeConfigSpec.IntValue CIGARETTE_USE_DURATION;
-    public static final ForgeConfigSpec.IntValue CIGARETTE_HUNGER_DRAIN;
-    public static final ForgeConfigSpec.BooleanValue CIGARETTE_BUTT_ENABLED;
-    public static final ForgeConfigSpec.DoubleValue CIGARETTE_BUTT_COMPOST_CHANCE;
+    public static final ModConfigSpec.IntValue CIGARETTE_USE_DURATION;
+    public static final ModConfigSpec.IntValue CIGARETTE_HUNGER_DRAIN;
+    public static final ModConfigSpec.BooleanValue CIGARETTE_BUTT_ENABLED;
+    public static final ModConfigSpec.DoubleValue CIGARETTE_BUTT_COMPOST_CHANCE;
     
     // Lighter settings
-    public static final ForgeConfigSpec.IntValue LIGHTER_DURABILITY;
+    public static final ModConfigSpec.IntValue LIGHTER_DURABILITY;
     
     // Effects (only applied when cosmetic_only is false)
-    public static final ForgeConfigSpec.BooleanValue ENABLE_NICOTINE_RUSH;
-    public static final ForgeConfigSpec.IntValue NICOTINE_RUSH_DURATION;
-    public static final ForgeConfigSpec.IntValue NICOTINE_RUSH_AMPLIFIER;
+    public static final ModConfigSpec.BooleanValue ENABLE_NICOTINE_RUSH;
+    public static final ModConfigSpec.IntValue NICOTINE_RUSH_DURATION;
+    public static final ModConfigSpec.IntValue NICOTINE_RUSH_AMPLIFIER;
     
-    public static final ForgeConfigSpec.BooleanValue ENABLE_HUNGER_EFFECT;
-    public static final ForgeConfigSpec.BooleanValue ENABLE_NAUSEA_EFFECT;
-    public static final ForgeConfigSpec.IntValue NAUSEA_DURATION;
-    public static final ForgeConfigSpec.IntValue NAUSEA_AMPLIFIER;
+    public static final ModConfigSpec.BooleanValue ENABLE_HUNGER_EFFECT;
+    public static final ModConfigSpec.BooleanValue ENABLE_NAUSEA_EFFECT;
+    public static final ModConfigSpec.IntValue NAUSEA_DURATION;
+    public static final ModConfigSpec.IntValue NAUSEA_AMPLIFIER;
     
     // Particles and visuals
-    public static final ForgeConfigSpec.DoubleValue SMOKE_PARTICLE_DENSITY;
-    public static final ForgeConfigSpec.BooleanValue ENABLE_EMBER_TIP;
+    public static final ModConfigSpec.DoubleValue SMOKE_PARTICLE_DENSITY;
+    public static final ModConfigSpec.BooleanValue ENABLE_EMBER_TIP;
 
     static {
         BUILDER.comment("Smokecraft Configuration");

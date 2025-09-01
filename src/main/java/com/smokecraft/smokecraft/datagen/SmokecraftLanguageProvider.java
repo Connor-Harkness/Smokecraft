@@ -3,7 +3,7 @@ package com.smokecraft.smokecraft.datagen;
 import com.smokecraft.smokecraft.Smokecraft;
 import com.smokecraft.smokecraft.init.ItemInit;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class SmokecraftLanguageProvider extends LanguageProvider {
 

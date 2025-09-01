@@ -3,20 +3,18 @@ package com.smokecraft.smokecraft;
 import com.smokecraft.smokecraft.config.SmokecraftConfig;
 import com.smokecraft.smokecraft.init.CreativeTabInit;
 import com.smokecraft.smokecraft.init.ItemInit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,9 +23,7 @@ public class Smokecraft {
     public static final String MOD_ID = "smokecraft";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public Smokecraft() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public Smokecraft(IEventBus modEventBus, ModContainer modContainer) {
         // Register deferred registries
         ItemInit.ITEMS.register(modEventBus);
         CreativeTabInit.CREATIVE_MODE_TABS.register(modEventBus);
@@ -41,10 +37,10 @@ public class Smokecraft {
         }
 
         // Register config
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SmokecraftConfig.COMMON_CONFIG);
+        modContainer.registerConfig(ModConfig.Type.COMMON, SmokecraftConfig.COMMON_CONFIG);
 
         // Register ourselves for server and other game events
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
