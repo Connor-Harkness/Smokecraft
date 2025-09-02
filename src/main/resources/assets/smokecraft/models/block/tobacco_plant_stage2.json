@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "smokecraft:block/tobacco_plant_stage2"
+  }
+}
